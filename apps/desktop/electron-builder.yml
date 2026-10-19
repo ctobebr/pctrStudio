@@ -1,0 +1,32 @@
+# electron-builder 打包配置（npm run dist:win）
+# 产物：release\PTCR-Studio-Setup-x.x.x.exe（安装包）+ release\win-unpacked\（免安装目录）
+appId: com.ptcr.studio
+productName: PTCR Studio
+directories:
+  output: release
+
+# 应用代码（打进 app.asar）：前端构建产物 + 主进程 + preload
+# 生产依赖 node_modules（adm-zip 等）由 electron-builder 自动收集
+files:
+  - dist/**
+  - electron/**
+  - package.json
+
+# 资源（原样落到安装目录 resources\ 下）
+extraResources:
+  - from: ../../resources
+    to: resources
+
+win:
+  target:
+    - nsis
+    - dir
+  artifactName: PTCR-Studio-Setup-${version}.${ext}
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  shortcutName: PTCR Studio
+  deleteAppDataOnUninstall: false

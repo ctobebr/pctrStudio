@@ -1,0 +1,26 @@
+{
+  "name": "ptcr-studio-desktop",
+  "private": true,
+  "version": "0.1.6",
+  "productName": "PTCR Studio",
+  "description": "PTCR Studio 桌面端：手机端点云/全景数据包的处理与可视化",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "node scripts/dev.cjs",
+    "build": "vite build",
+    "start": "electron .",
+    "dist:win": "node scripts/dist-win.cjs"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "three": "^0.170.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "electron": "^33.3.0",
+    "electron-builder": "^26.15.3",
+    "vite": "^5.4.11"
+  }
+}

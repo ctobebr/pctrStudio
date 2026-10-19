@@ -1,0 +1,154 @@
+/* PTCR Studio 桌面端基础样式（深色工作台风格） */
+:root {
+  --bg: #0d1117;
+  --bg-panel: #161b22;
+  --bg-panel-hover: #1c2330;
+  --bg-inset: #0a0e14;
+  --border: #2d333b;
+  --border-strong: #3d444d;
+  --text: #e6edf3;
+  --text-dim: #8b949e;
+  --text-faint: #6e7681;
+  --accent: #4c8dff;
+  --accent-hover: #6ba1ff;
+  --success: #3fb950;
+  --warn: #d29922;
+  --error: #f85149;
+  --skipped: #6e7681;
+  --radius: 8px;
+  --radius-sm: 6px;
+  --font-mono: 'Cascadia Code', 'Consolas', 'SF Mono', Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 5px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #484f58;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 通用按钮 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: #21262d;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1;
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.btn:hover:not(:disabled) {
+  background: #2d333b;
+  border-color: #57606a;
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.btn.primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+.btn.danger {
+  color: var(--error);
+  border-color: rgba(248, 81, 73, 0.4);
+}
+.btn.danger:hover:not(:disabled) {
+  background: rgba(248, 81, 73, 0.12);
+}
+
+/* 面板 */
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* 输入控件 */
+.select,
+.input {
+  background: var(--bg-inset);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: 6px 10px;
+  font-size: 13px;
+  font-family: inherit;
+}
+.select:focus,
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* 徽标 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  line-height: 1.5;
+  background: #21262d;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.badge.ok {
+  color: var(--success);
+  border-color: rgba(63, 185, 80, 0.35);
+}
+.badge.warn {
+  color: var(--warn);
+  border-color: rgba(210, 153, 34, 0.35);
+}
