@@ -18,6 +18,7 @@ export function usePointCloudRenderer(container, options = {}) {
     addPointsFromArrays: rendererCore.addPointsFromArrays,
     resetPointCloud: rendererCore.resetPointCloud,
     setTargetFps: rendererCore.setTargetFps,
+    setPointSize: rendererCore.setPointSize,
     onResize: rendererCore.onResize,
     markNeedsRender: rendererCore.markNeedsRender,
     fitCameraToBounds: rendererCore.fitCameraToBounds,

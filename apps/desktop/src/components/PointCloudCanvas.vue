@@ -8,6 +8,20 @@
     <div v-else-if="empty" class="overlay empty">该节点暂无点云数据</div>
 
     <div class="toolbar">
+      <div v-if="loaded" class="size-ctrl" title="调整点大小；双击滑块或点 ⟲ 恢复默认">
+        <span class="size-label">点大小</span>
+        <input
+          v-model.number="pointSize"
+          class="size-slider"
+          type="range"
+          :min="POINT_SIZE_LIMITS.min"
+          :max="POINT_SIZE_LIMITS.max"
+          :step="POINT_SIZE_LIMITS.step"
+          @dblclick="resetPointSize"
+        />
+        <button class="size-reset" title="恢复默认点大小" @click="resetPointSize">⟲</button>
+        <span class="size-value">{{ pointSize.toFixed(2) }}</span>
+      </div>
       <button class="btn" :disabled="!loaded" @click="resetView">重置视角</button>
     </div>
 
@@ -26,6 +40,7 @@
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import api from '../api/ipc'
 import { usePointCloudRenderer } from '../composables/usePointCloudRenderer'
+import { POINT_SIZE_LIMITS } from '../composables/usePointCloudRenderer/config'
 
 const props = defineProps({
   cloudPath: { type: String, default: '' },
@@ -39,6 +54,22 @@ const error = ref('')
 const empty = ref(false)
 const loaded = ref(false)
 const stats = ref({ count: 0, total: 0, truncated: false, hasColor: false })
+
+const POINT_SIZE_STORAGE_KEY = 'ptcr.pointSize'
+
+function readSavedPointSize() {
+  const raw = Number(localStorage.getItem(POINT_SIZE_STORAGE_KEY))
+  if (!Number.isFinite(raw) || raw <= 0) return POINT_SIZE_LIMITS.default
+  // 夹在可调范围内，防止历史脏数据把滑块撑爆
+  return Math.min(POINT_SIZE_LIMITS.max, Math.max(POINT_SIZE_LIMITS.min, raw))
+}
+
+// 点大小：用户偏好持久化，跨会话记忆
+const pointSize = ref(readSavedPointSize())
+
+function resetPointSize() {
+  pointSize.value = POINT_SIZE_LIMITS.default
+}
 
 let renderer = null
 let resizeObserver = null
@@ -80,10 +111,10 @@ function resetView() {
 }
 
 onMounted(async () => {
-  renderer = usePointCloudRenderer(containerRef.value, {
-    pointSize: 0.25,
-  })
+  renderer = usePointCloudRenderer(containerRef.value)
   renderer.init()
+  // 应用用户上次保存的点大小偏好
+  renderer.setPointSize(pointSize.value)
   resizeObserver = new ResizeObserver(() => renderer.onResize())
   resizeObserver.observe(containerRef.value)
   await load()
@@ -97,6 +128,12 @@ onBeforeUnmount(() => {
 
 watch(() => props.cloudPath, () => load())
 watch(() => props.reloadKey, () => load())
+
+// 拖动滑块实时调整点大小并记住偏好（setPointSize 仅改 uniform，开销可忽略）
+watch(pointSize, (v) => {
+  renderer?.setPointSize(v)
+  localStorage.setItem(POINT_SIZE_STORAGE_KEY, String(v))
+})
 
 defineExpose({ load })
 </script>
@@ -146,6 +183,45 @@ defineExpose({ load })
   display: flex;
   gap: 8px;
   z-index: 6;
+}
+/* 点大小滑块控件：与 .btn 同视觉规格（高度/底色/描边），并排不突兀 */
+.size-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 27px;
+  padding: 0 12px;
+  background: #21262d;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.size-label {
+  white-space: nowrap;
+}
+.size-slider {
+  width: 110px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.size-reset {
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 2px;
+  cursor: pointer;
+}
+.size-reset:hover {
+  color: var(--text);
+}
+.size-value {
+  min-width: 28px;
+  text-align: right;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
 }
 .stats {
   position: absolute;

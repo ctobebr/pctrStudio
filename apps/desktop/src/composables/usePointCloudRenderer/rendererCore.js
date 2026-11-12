@@ -267,6 +267,16 @@ export function createRendererCore({ container, config, bufferManager, colorCalc
     frameInterval = 1000 / targetFps
   }
 
+  /**
+   * 调整点云点大小（仅改材质 uniform，不重建缓冲，实时生效）
+   */
+  function setPointSize(size) {
+    if (!pointsMaterial) return
+    if (typeof size !== 'number' || !Number.isFinite(size) || size <= 0) return
+    pointsMaterial.size = size
+    markNeedsRender()
+  }
+
   function getCurrentPointCount() {
     return currentPointCount
   }
@@ -375,6 +385,7 @@ export function createRendererCore({ container, config, bufferManager, colorCalc
     addPointsFromArrays,
     resetPointCloud,
     setTargetFps,
+    setPointSize,
     markNeedsRender,
     isWebGLContextValid,
     onResize,
