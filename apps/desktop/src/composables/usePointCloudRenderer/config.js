@@ -8,10 +8,10 @@
  * default 与 config.pointSize 保持一致，作为滑块重置的默认值
  */
 export const POINT_SIZE_LIMITS = Object.freeze({
-  min: 0.05,
-  max: 1.2,
-  step: 0.05,
-  default: 0.25,
+  min: 0.005,
+  max: 0.1,
+  step: 0.005,
+  default: 0.05,
 })
 
 /** @type {RendererConfig} */

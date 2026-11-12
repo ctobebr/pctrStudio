@@ -20,7 +20,7 @@
           @dblclick="resetPointSize"
         />
         <button class="size-reset" title="恢复默认点大小" @click="resetPointSize">⟲</button>
-        <span class="size-value">{{ pointSize.toFixed(2) }}</span>
+        <span class="size-value">{{ pointSize.toFixed(3) }}</span>
       </div>
       <button class="btn" :disabled="!loaded" @click="resetView">重置视角</button>
     </div>

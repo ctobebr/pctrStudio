@@ -1,7 +1,7 @@
 {
   "name": "ptcr-studio-desktop",
   "private": true,
-  "version": "0.1.6",
+  "version": "0.1.8",
   "productName": "PTCR Studio",
   "description": "PTCR Studio 桌面端：手机端点云/全景数据包的处理与可视化",
   "main": "electron/main.cjs",

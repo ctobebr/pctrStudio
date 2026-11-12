@@ -85,7 +85,8 @@ export function createRendererCore({ container, config, bufferManager, colorCalc
     controls.enablePan = true
     controls.minDistance = 0.5
     controls.maxDistance = 500
-    controls.maxPolarAngle = Math.PI / 2
+    // 垂直方向放开到完整球面（0~π），允许从正上方转到正下方，实现垂直 360° 旋转
+    controls.maxPolarAngle = Math.PI
     controls.addEventListener('change', () => {
       markNeedsRender()
     })
